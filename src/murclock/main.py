@@ -1,8 +1,13 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+import zoneinfo
+from datetime import datetime
+from typing import TYPE_CHECKING
 
 import streamlit as st
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
 
 st.set_page_config(page_title="Clock", layout="centered")
 
@@ -20,8 +25,13 @@ Wait for updates!
 st.header("The Clock")
 
 
+@st.cache_data
+def get_timezones() -> Sequence[str]:
+    return sorted(zoneinfo.available_timezones())
+
+
 @st.fragment(run_every=1)
-def fr_clock_autorefresh(tz: timezone | None = None) -> None:
+def fr_clock_autorefresh(tz: zoneinfo.ZoneInfo | None = None) -> None:
     now = datetime.now(tz=tz)
     now_str = now.strftime("%H:%M:%S")
     st.markdown(
@@ -38,4 +48,7 @@ def fr_clock_autorefresh(tz: timezone | None = None) -> None:
 
 st.title("Current Time")
 
-fr_clock_autorefresh()
+tzname = st.selectbox("Choose your timezone 🕑", get_timezones())
+tz = zoneinfo.ZoneInfo(tzname)
+
+fr_clock_autorefresh(tz)
