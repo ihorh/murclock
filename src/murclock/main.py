@@ -1,5 +1,6 @@
 import streamlit as st
 
+st.image("images/image.png")
 
 st.title("MurClock")
 
