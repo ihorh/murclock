@@ -7,7 +7,9 @@ authors = [
     { name = "ihor", email = "Ihor.Halaniuk@gmail.com" }
 ]
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "streamlit>=1.54.0",
+]
 
 [project.scripts]
 murclock = "murclock:main"
